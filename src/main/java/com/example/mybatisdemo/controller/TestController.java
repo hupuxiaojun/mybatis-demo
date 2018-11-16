@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 /**
  * TODO
  *
@@ -53,6 +55,24 @@ public class TestController {
         System.out.println("通过sqlSession去查询");
         return userDao.selectByPrimaryKey(uid);
     }
+    @RequestMapping("/users2/tables")
+    public Object tables() throws SQLException {
+        System.out.println("通过jdbcTemplate去查询tables");
+        return userDao.getTablesMetadata();
+    }
+
+    @RequestMapping("/users2/tablesFromMyBatis")
+    public Object tablesFromMyBatis() throws SQLException {
+        System.out.println("通过sqlSession去查询tables");
+        return userDao.getTablesMetadataFromSqlSession();
+    }
+
+    @RequestMapping("/users2/{table}/columns")
+    public Object tableColumns(@PathVariable("table") String table) throws SQLException {
+        System.out.println("通过sqlSession去查询表的所有列信息");
+        return userDao.getTableColumns(table);
+    }
+
 
     @RequestMapping("/users3/{uid}")
     public Object test3(@PathVariable("uid") String uid) {
